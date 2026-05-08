@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Traffic Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        setTimeout(function(){
+            window.location.reload(1);
+        }, 20000); 
+    </script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+    <div class="container mx-auto p-8">
+        <header class="flex justify-between items-center mb-10 border-b border-gray-700 pb-5">
+    <h1 class="text-3xl font-bold text-blue-400 italic">TRAFFIC<span class="text-white">AI_COMMAND</span></h1>
+    <div class="flex space-x-4">
+        <a href="{% url 'export_pdf' %}" class="bg-red-600 hover:bg-red-700 p-2 rounded text-white font-bold transition duration-200">
+            Download PDF Report
+        </a>
+    </div>
+    <div class="flex space-x-6">
+        <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-blue-500 shadow-md">
+            <p class="text-gray-400 text-xs uppercase tracking-widest">Total Violations</p>
+            <p class="text-2xl font-bold">{{ total_count }}</p>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-green-500 shadow-md">
+            <p class="text-gray-400 text-xs uppercase tracking-widest">Revenue Generated</p>
+            <p class="text-2xl font-bold text-green-400">₹{{ total_fines }}</p>
+        </div>
+    </div>
+</header>
+
+        <div class="bg-gray-800 rounded-lg shadow-xl overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-gray-700 text-gray-300 uppercase text-sm">
+                    <tr>
+                        <th class="p-4">Time</th>
+                        <th class="p-4">Vehicle</th>
+                        <th class="p-4">Plate Number</th>
+                        <th class="p-4">Fine Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-700">
+                    {% for v in violations %}
+                    <tr class="hover:bg-gray-700 transition">
+                        <td class="p-4 text-gray-400">{{ v.timestamp|date:"H:i:s"}}</td>
+                        <td class="p-4">
+                            <span class="px-2 py-1 rounded text-xs bg-blue-900 text-blue-200">
+                                {{ v.vehicle_type }}
+                            </span>
+                        </td>
+                        <td class="p-4 font-mono text-yellow-500 font-bold text-lg">{{ v.plate_number }}</td>
+                        <td class="p-4">
+                            <span class="text-green-500">₹{{ v.fine_amount }} (Unpaid)</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="p-10 text-center text-gray-500 italic">No violations recorded yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    setTimeout(function(){
+        window.location.reload(1);
+    }, 3000);
+</script>
